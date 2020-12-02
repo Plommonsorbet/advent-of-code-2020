@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+ROOT=`git rev-parse --show-toplevel`
+
+mkdir $ROOT/days > /dev/null 2>&1
+
+function help {
+	 cat <<EOF
+new-day
+    -h  - Display this help message.
+
+    -r  - Adds a command to run at the end of the template in templates/run.
+        The run template will change to the day directory (days/<index>)
+        before running command.
+        
+        So only the relative path from the day directory is required to run
+        something.
+        
+        example: new-day -r "racket ./main.rkt"
+EOF
+	exit 0
+}
+
+while getopts 'r:h' arg; do
+      case $arg in
+    	   r)
+	   echo 1
+	   RUN_COMMAND="$OPTARG"
+	   ;;
+	   h | *)
+	   help
+	   exit 1
+	   ;;
+	   
+      esac
+done
+
+function error {
+	 echo "$1" && exit 1
+}
+
+function init-day {
+	 test $1 || error "function init-day takes an argument <index> for new day."
+	 mkdir $ROOT/days/$1
+	 cp $ROOT/templates/meta.json $ROOT/days/$1/
+	 cp $ROOT/templates/run $ROOT/days/$1/
+	 echo "$RUN_COMMAND" >> $ROOT/days/$1/run
+}
+
+function last-day-index {
+	 INDEX=`ls $ROOT/days |sort -rh | head -n 1`
+	 test $INDEX || return 1
+	 echo $INDEX
+}
+
+
+function new-day-index {
+	 INDEX=`last-day-index || echo 0`
+	 bc <<< "$INDEX + 1"
+}
+
+init-day `new-day-index`
