@@ -12,7 +12,7 @@ let
 in with nixpkgs;
 stdenv.mkDerivation {
   name = "rust-nightly-dev";
-  buildInputs = [ rust_nightly cargo rustup scriptisto ];
+  buildInputs = [ rust_nightly cargo rustup scriptisto racket ];
 
 }
 
