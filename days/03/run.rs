@@ -18,14 +18,25 @@ fn input() -> String {
     std::fs::read_to_string("input").unwrap()
 }
 
-
 fn trees_on_route(map_width: usize, mv_x: usize, mv_y: usize) -> usize {
     input()
         .lines()
+	// Enumerate the iterator
         .enumerate()
+        // Filter out rows that it steps over rather than through
+        // EXAMPLE:
+        // skips y = 1, 3 for mv_y = 2
+        //
+        // y(0) y % mv_y = 0 % 2 = 0 - Include since it is equal to 0
+        // y(1) y % mv_y = 1 % 2 = 1 - Skip since it is equal to 1
+        // y(2) y % mv_y = 1 % 2 = 0 - Include since it is equal to 0
+        // y(3) y % mv_y = 1 % 2 = 1 - Skip since it is equal to 1
         .filter(|(y, row)| y % mv_y == 0)
+	// Calculate x based on y and get character x of row and account for overflow.
         .filter_map(|(y, row)| row.chars().nth(((mv_x * (y / mv_y)) % (map_width - 1))))
+	// Remove any tiles(character) that does not match a tree(#)
         .filter(|&tile| tile == '#')
+	// Count how many steps the iterator has
         .count()
 }
 
