@@ -1,5 +1,4 @@
 #!/usr/bin/env scriptisto
-
 // scriptisto-begin
 // script_src: src/main.rs
 // build_cmd: cargo build --release && strip ./target/release/script
@@ -9,28 +8,36 @@
 //    content: |
 //     package = { name = "script", version = "0.1.0", edition = "2018"}
 //     [dependencies]
+//     itertools = "0.9.0"
+//
 // scriptisto-end
 
-use std::io::{self, Read};
-
-pub type Result = ::std::result::Result<(), Box<dyn std::error::Error>>;
+use itertools::Itertools;
 
 fn input() -> String {
-    let mut buffer = String::new();
-    io::stdin()
-        .read_to_string(&mut buffer)
-        .expect("ERROR: Unable to read from stdin!");
-
-    return buffer;
+    std::fs::read_to_string("input").unwrap()
 }
 
-fn main() -> Result {
-    let input = input();
+fn part_1() {
+    println!("P1:");
+    println!("CALCULATION: ");
+    println!("ANSWER: ");
+}
 
-    for line in input.lines() {
-	println!("{}", line);
-    }
+fn part_2() {
+    println!("\nP2:");
+    println!("CALCULATION: ");
+    println!("ANSWER: ");
+}
 
-    println!("RESULT: ", ());
-    Ok(())
+fn part_3() {
+    println!("\nP3:");
+    println!("CALCULATION: ");
+    println!("ANSWER: ");
+}
+
+fn main() {
+    part_1();
+    //part_2();
+    //part_3();
 }

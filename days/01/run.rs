@@ -8,33 +8,48 @@
 //    content: |
 //     package = { name = "script", version = "0.1.0", edition = "2018"}
 //     [dependencies]
+//     itertools = "0.9.0"
+//
 // scriptisto-end
 
-use std::io::{self, Read};
-
-pub type Result = ::std::result::Result<(), Box<dyn std::error::Error>>;
-
 fn input() -> String {
-    let mut buffer = String::new();
-    io::stdin()
-        .read_to_string(&mut buffer)
-        .expect("ERROR: Unable to read from stdin!");
-
-    return buffer;
+    std::fs::read_to_string("input").unwrap()
 }
 
-fn main() -> Result {
+fn part_1() {
+    println!("P1:");
     let sum = 2020;
     let input: Vec<i32> = input().lines().map(|x| x.parse().unwrap()).collect();
 
-    for n1 in &input {
-        for n2 in &input {
-            if n1 + n2 == sum {
-                println!("RESULT: {i} + {j} = {} :: {i} * {j} = {}", sum, n1 * n2,i=n1, j=n2);
-                return Ok(());
-            };
+    for x in &input {
+        for y in &input {
+            if x + y == sum {
+                println!("CALCULATION: {} + {} = {}", x, y, sum);
+                println!("ANSWER: {}", x * y);
+                return;
+            }
         }
     }
+}
+fn part_2() {
+    println!("\nP2:");
+    let sum = 2020;
+    let input: Vec<i32> = input().lines().map(|x| x.parse().unwrap()).collect();
 
-    Ok(())
+    for x in &input {
+        for y in &input {
+            for z in &input {
+                if x + y + z == sum {
+                    println!("CALCULATION: {} + {} + {} = {}", x, y, z, sum);
+                    println!("ANSWER: {}", x * y * z);
+                    return;
+                };
+            }
+        }
+    }
+}
+
+fn main() {
+    part_1();
+    part_2();
 }
